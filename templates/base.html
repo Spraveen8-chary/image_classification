@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIND_FACE</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+   
+    <img src="{% static 'images/logo.png' %}" alt="logo">
+    <h1>
+        <span class="big-letter">F</span>IND <span class="big-letter">&nbsp; F</span>ACE
+    </h1>
+    
+    <img src="{% static 'images/background.gif' %}" image" style="width: 65%;" alt="background Image" class="background-image">
+   
+    <div class="vertical-line"></div>
+
+
+
+    <form action="/selection/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="folderInput" class="form-label">Select Folder</label>
+            <input class="form-control" type="file" id="folderInput" name="folderInput" webkitdirectory directory multiple>
+        </div>
+        <div class="mb-4">
+            <label for="formFile" class="image-selection">Select Image <br></label>
+            <input class="form-control" type="file" id="formFile" name="formFile">
+        </div>   
+        <input class="sub" type="submit" value="Submit">
+    </form>
+
+    
+    {% if image_file %}
+        <img class="picture" src="{% static 'images/uploads/' %}{{ image_file.name }}" alt="your_image">
+    {% else %}
+        <img class="picture" src="{% static 'images/uploads/no_user.png' %}" alt="your image">
+    {% endif %}
+
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar-label"></div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (event) {
+                event.preventDefault();
+                var formData = new FormData($(this)[0]);
+                
+                $.ajax({
+                    xhr: function () {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener("progress", function (evt) {
+                            if (evt.lengthComputable) {
+                                var progress = Math.round((evt.loaded / evt.total) * 100);
+                                $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+                                $('.progress-bar-label').text(progress + '%');
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'POST',
+                    url: '/selection/',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.progress === 100) {
+                            // Update UI when the process is complete
+                            $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
+                            $('.progress-bar-label').text('100%');
+                            alert('Face comparison and image copying completed!');
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('An error occurred while processing: ' + thrownError);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

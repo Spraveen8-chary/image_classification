@@ -1,0 +1,43 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIND_FACE</title>
+    <!-- <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1"> -->
+
+    <!-- <link rel="stylesheet" href="{% static 'css/base.css' %}"> -->
+    <link rel="stylesheet" href="/DJANGO/first_project/image_classification/static/css/base.css">
+
+</head>
+<body>
+    <img  src="/DJANGO/first_project/image_classification/static/images/logo.png" alt="">
+    <!-- <img src="{% static 'images/logo.png' %}" alt="logo"> -->
+    <h1>
+        <span class="big-letter">F</span>IND <span class="big-letter">&nbsp; F</span>ACE
+    </h1>
+    
+    <!-- <img src="{% static 'images/background.gif' %}" image" style="width: 65%;" alt="background Image" class="background-image"> -->
+    <img class="back" src="/DJANGO/first_project/image_classification/static/images/background.gif" alt="">
+    <div class="vertical-line"></div>
+
+
+    <form action="/selection" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="folderInput" class="form-label">Select Folder</label>
+            <input class="form-control" type="file" id="folderInput" webkitdirectory directory multiple>
+        </div>
+        <div class="mb-4">
+            <label for="formFile" class="image-selection">Select Image <br></label>
+            <input class="form-control" type="file" id="formFile">
+        </div>   
+        <input class="sub" type="submit" value="Submit">
+        
+    </form>
+
+    <img class="picture" src='/DJANGO/first_project/image_classification/static/images/no_user.png' alt="your image">
+
+</body>
+</html>
