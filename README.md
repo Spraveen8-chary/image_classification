@@ -1,6 +1,6 @@
 # image_classification
 
--> I had done Image classifiction 
+I had done Image classification 
 
 # Features 
 
